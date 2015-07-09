@@ -5,7 +5,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.integer :bankroll
       t.boolean :horse, default: true
 
-      t.string  :token
+      t.string  :token, null: false
 
       t.timestamps null: false
     end

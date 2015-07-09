@@ -8,14 +8,18 @@
 </head>
 <body>
   <%- if @player %>
-    Welcome <%= @player.name %>
+    <div class="wood bar">
+      Welcome <%= @player.name %>!
+      This is your personal login link:
+      <a href="/token/<%= @player.token %>">Poker</a>
+      Drag it to your bookmarks bar.
+    </div>
   <%- end %>
   <%= yield %>
   <%- unless @player %>
     <div class="modal">
       <script>
-       function validateName()
-       {
+       function validateName() {
          event.preventDefault();
          if(document.getElementById('nameField').value.length < 3){
            document.getElementById('loginTitle').innerText = 'SAY YOU NAME!';
