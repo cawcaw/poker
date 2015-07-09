@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+
+  root 'game#index'
+
+  post 'game' => 'game#create'
+
+  patch 'game/:id' => 'game#update'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
