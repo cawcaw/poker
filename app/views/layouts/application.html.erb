@@ -7,8 +7,31 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <%- if @player %>
+    Welcome <%= @player.name %>
+  <%- end %>
+  <%= yield %>
+  <%- unless @player %>
+    <div class="modal">
+      <script>
+       function validateName()
+       {
+         event.preventDefault();
+         if(document.getElementById('nameField').value.length < 3){
+           document.getElementById('loginTitle').innerText = 'SAY YOU NAME!';
+         } else {
+           event.srcElement.parentElement.submit();
+         }
+         return false;
+       }
+      </script>
+      <form class="wood panel" action="/players" method="post">
+        <span id="loginTitle">You name!</span>
+        <br/><br/>
+        <input type="text" name="name" id="nameField">
+        <input type="submit" value="Enter!" onClick="validateName()">
+      </form>
+    </div>
+  <%- end %>
 </body>
 </html>
