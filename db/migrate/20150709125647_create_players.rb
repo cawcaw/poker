@@ -1,11 +1,11 @@
 class CreatePlayers < ActiveRecord::Migration
   def change
     create_table :players do |t|
-      t.string :name
+      t.string  :name
       t.integer :bankroll
       t.boolean :horse, default: true
 
-      t.string :token
+      t.string  :token
 
       t.timestamps null: false
     end

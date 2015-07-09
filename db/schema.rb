@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150709073202) do
+ActiveRecord::Schema.define(version: 20150709131801) do
 
   create_table "games", force: :cascade do |t|
     t.string   "deck_state"
@@ -20,6 +20,27 @@ ActiveRecord::Schema.define(version: 20150709073202) do
     t.boolean  "live"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hands", force: :cascade do |t|
+    t.integer  "player_id"
+    t.integer  "game_id"
+    t.integer  "stack",      default: 0
+    t.integer  "bet",        default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "hands", ["game_id"], name: "index_hands_on_game_id"
+  add_index "hands", ["player_id"], name: "index_hands_on_player_id"
+
+  create_table "players", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "bankroll"
+    t.boolean  "horse",      default: true
+    t.string   "token"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
 end
