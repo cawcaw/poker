@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150709131801) do
     t.integer  "game_id"
     t.integer  "stack",      default: 0
     t.integer  "bet",        default: 0
+    t.integer  "number",                 null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

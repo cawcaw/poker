@@ -5,6 +5,7 @@ class CreateHands < ActiveRecord::Migration
       t.references :game,   index: true, foreign_key: true
       t.integer :stack,     default: 0
       t.integer :bet,       default: 0
+      t.integer :number,    null: false
 
       t.timestamps null: false
     end
