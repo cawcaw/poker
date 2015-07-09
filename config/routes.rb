@@ -4,7 +4,14 @@ Rails.application.routes.draw do
 
   post 'game' => 'game#create'
 
-  patch 'game/:id' => 'game#update'
+  patch 'game/:id' => 'game#change'
+
+
+  get 'players' => 'players#index'
+
+  post 'players' => 'players#create'
+
+  patch 'players/:id' => 'players#change'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
