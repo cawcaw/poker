@@ -1,2 +1,5 @@
-h1 Game#index
-p Find me in app/views/game/index.html.slim
+h1 Texas Hold'em
+- @games.each do |game|
+  div
+    span = game.id
+    span = pot
