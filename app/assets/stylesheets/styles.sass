@@ -8,7 +8,6 @@ body
   image-rendering: -webkit-optimize-contrast
   image-rendering: pixelated
   image-rendering: optimize-contrast
-  image-rendering: optimizeSpeed
   -ms-interpolation-mode: nearest-neighbor
 
 
@@ -17,6 +16,9 @@ body
 
   text-align: center
   color: #d7ad7b
+
+a
+  color: #A00
 
 .wood
   color: #342812
@@ -29,6 +31,13 @@ body
   padding: 6px 0 10px
   box-shadow: inset 0px -4px rgba(0, 0, 0, 0.4), 0px 8px rgba(0, 0, 0, 0.4)
 
+.button
+  text-decoration: none
+  padding: 10px 12px 14px
+  cursor: pointer
+  box-shadow: inset 0 4px rgba(255, 255, 255, 0.2), inset 0 -4px rgba(0, 0, 0, 0.4), 0 8px rgba(0, 0, 0, 0.4)
+  &:hover
+    box-shadow: inset 0 4px rgba(255, 255, 255, 0.2), inset 0 -4px rgba(0, 0, 0, 0.4), 0 4px rgba(0, 0, 0, 0.4)
 .modal
   position: absolute
   background: rgba(0, 0, 0, 0.4)
