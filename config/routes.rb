@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   root 'game#index'
   post 'game' => 'game#create'
+  patch 'game/:id' => 'game#show'
   patch 'game/:id' => 'game#change'
   get 'new' => 'game#new', as: :new_game
 
