@@ -11,17 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150709145252) do
+ActiveRecord::Schema.define(version: 20150712093654) do
 
   create_table "games", force: :cascade do |t|
-    t.string   "deck_state"
+    t.string   "deck_state",              default: "dddddddddddddddddddddddddddddddddddddddddddddddddddd"
     t.integer  "pot"
     t.integer  "bet"
-    t.boolean  "live"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.boolean  "live",                    default: true
+    t.datetime "created_at",                                                                               null: false
+    t.datetime "updated_at",                                                                               null: false
     t.integer  "code",       limit: 9999
     t.integer  "size",       limit: 10,   default: 2
+    t.integer  "street"
   end
 
   create_table "hands", force: :cascade do |t|
@@ -29,9 +30,10 @@ ActiveRecord::Schema.define(version: 20150709145252) do
     t.integer  "game_id"
     t.integer  "stack",      default: 0
     t.integer  "bet",        default: 0
-    t.integer  "number",                 null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "number",                     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.boolean  "ai",         default: false
   end
 
   add_index "hands", ["game_id"], name: "index_hands_on_game_id"
@@ -39,9 +41,9 @@ ActiveRecord::Schema.define(version: 20150709145252) do
 
   create_table "players", force: :cascade do |t|
     t.string   "name"
-    t.integer  "bankroll"
+    t.integer  "bankroll",   default: 2000, null: false
     t.boolean  "horse",      default: true
-    t.string   "token"
+    t.string   "token",                     null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end

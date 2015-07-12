@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
 
   def authorize
     @player = Player.find_by_token request.cookies['token']
-    redirect_to :root unless @player
+    # unless @player || flash[:redirected]
+    #   redirect_to :root
+    #   flash[:redirected] = true
+    # end
   end
 end

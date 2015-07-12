@@ -1,0 +1,33 @@
+br
+- if @game.in_game?(@player)
+  .game
+    .hands
+      - @game.hands.reject { |hand| hand.player == @player } .each do |hand|
+        .hand
+          - @game.cards_in_hand(hand).each do |card|
+            -# for rentgen mode
+            -# img src=image_url("deck/#{card.to_s.rjust(2, "0")}.png")
+            img src=image_url("deck/bk.png")
+          br
+            = hand.player.name
+    br
+    .table
+      - @game.cards_on_table.each do |card|
+        img src=image_url("deck/#{card.to_s.rjust(2, "0")}.png")
+    .player
+      .buttons
+        = button_to "bet/call", game_turn_path, turn: "bet",   remote: true, class: 'wood button'
+        = button_to "check", game_turn_path,    turn: "check", remote: true, class: 'wood button'
+        = button_to "raise", game_turn_path,    turn: "raise", remote: true, class: 'wood button'
+      br
+      .cards
+        - @game.cards_for(@player).each do |card|
+          img src=image_url("deck/#{card.to_s.rjust(2, "0")}.png")
+  javascript:
+    source = new EventSource('/game/#{@game.id}/stream');
+    source.onmessage = function() {
+      console.log("server sent page reload");
+      Turbolinks.visit(location.toString());
+    }
+- else
+  = button_to "join", join_game_path, method: :post, class: 'wood button'
