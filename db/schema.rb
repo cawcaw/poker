@@ -11,18 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150712093654) do
+ActiveRecord::Schema.define(version: 20150712212953) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "games", force: :cascade do |t|
-    t.string   "deck_state",              default: "dddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    t.string   "deck_state", default: "dddddddddddddddddddddddddddddddddddddddddddddddddddd"
     t.integer  "pot"
     t.integer  "bet"
-    t.boolean  "live",                    default: true
-    t.datetime "created_at",                                                                               null: false
-    t.datetime "updated_at",                                                                               null: false
-    t.integer  "code",       limit: 9999
-    t.integer  "size",       limit: 10,   default: 2
+    t.boolean  "live",       default: true
+    t.datetime "created_at",                                                                  null: false
+    t.datetime "updated_at",                                                                  null: false
+    t.string   "token"
+    t.integer  "size",       default: 2
     t.integer  "street"
+    t.integer  "button",     default: 0
   end
 
   create_table "hands", force: :cascade do |t|
@@ -36,8 +40,8 @@ ActiveRecord::Schema.define(version: 20150712093654) do
     t.boolean  "ai",         default: false
   end
 
-  add_index "hands", ["game_id"], name: "index_hands_on_game_id"
-  add_index "hands", ["player_id"], name: "index_hands_on_player_id"
+  add_index "hands", ["game_id"], name: "index_hands_on_game_id", using: :btree
+  add_index "hands", ["player_id"], name: "index_hands_on_player_id", using: :btree
 
   create_table "players", force: :cascade do |t|
     t.string   "name"
@@ -48,4 +52,6 @@ ActiveRecord::Schema.define(version: 20150712093654) do
     t.datetime "updated_at",                null: false
   end
 
+  add_foreign_key "hands", "games"
+  add_foreign_key "hands", "players"
 end

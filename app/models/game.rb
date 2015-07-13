@@ -14,8 +14,26 @@ class Game < ActiveRecord::Base
   has_many :hands
   has_many :players, through: :hands
 
+  # db notinited values fuse ///
   def street
     read_attribute(:street) || 0
+  end
+  # ////////////////////////////
+  def bet
+    read_attribute(:bet)    || 0
+  end
+  # ////////////////////////////
+  def button
+    read_attribute(:button) || 0
+  end
+  # ////////////////////////////
+
+  def button_hand
+    hands.where(number: button).first
+  end
+
+  def button_hand?(hand)
+    hand.number == button
   end
 
   def next_street
@@ -50,11 +68,13 @@ class Game < ActiveRecord::Base
       end
     end
     next_street if all_in_place?
+    Game.connection.execute "NOTIFY game, 'add_hand'"
   end
 
   def add_ai_hand(stack)
     hands.create({ ai: true, game_id: id, number: hands.counts, stack: stack })
     next_street if all_in_place?
+    Game.connection.execute "NOTIFY game, 'add_io_hand'"
   end
 
   def cards
@@ -75,6 +95,10 @@ class Game < ActiveRecord::Base
 
   def opponents_for(player)
     players.reject { |opponent| opponent == player }
+  end
+
+  def hand_of(player)
+    hand = hands.where(player_id: player.id).first
   end
 
   def cards_for(player)
@@ -99,6 +123,18 @@ class Game < ActiveRecord::Base
     hands.each do |hand|
       2.times { cards_put_one_to hand.number }
     end
+    update_attribute :bet, 20
+  end
+
+  def on_change
+    Game.connection.execute "LISTEN game"
+    loop do
+      Game.connection.raw_connection.wait_for_notify do |event, pid, payload|
+        yield payload
+      end
+    end
+  ensure
+    Game.connection.execute "UNLISTEN game"
   end
 
   def finish!

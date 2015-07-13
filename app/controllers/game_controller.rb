@@ -26,23 +26,26 @@ class GameController < ApplicationController
   def join
     @game = Game.find(params[:id])
     @game.add_hand @player, 500
+    Game.connection.execute "NOTIFY game, 'join'"
     redirect_to :back
   end
 
   def change
     @game = Game.find(params[:id])
+    case params[:]
     redirect_to :back
   end
 
   def stream
+    @game = Game.find(params[:id])
     response.headers['Content-Type'] = 'text/event-stream'
     sse = SSE.new(response.stream)
     begin
-      p "stream established"
-      ActiveSupport::Notifications.subscribe("game_turn") do |*args|
-        sse.write("rerender!")
+      @game.on_change do |data|
+        sse.write(data)
       end
     rescue IOError
+    # Client Disconnected
     ensure
       sse.close
     end

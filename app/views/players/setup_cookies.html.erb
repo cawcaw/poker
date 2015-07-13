@@ -1,8 +1,8 @@
 <h2>Setup Cookies...</h2>
 <img src="<%= image_url('cookie.png') %>" width="400px"/>
 <script>
- document.cookie = "token=<%= @player.token %>"
+ document.cookie = "token=<%= @player.token %>";
  setTimeout(function() {
-   window.location.replace("/")
- }, 2000);
+   window.location.replace("/");
+ }, 1000);
 </script>

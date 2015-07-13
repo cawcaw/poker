@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post 'game/:id' => 'game#change',        as: :game_turn
   get  'new' => 'game#new',                as: :new_game
   post 'game/:id/join' => 'game#join',     as: :join_game
-  get  'game/:id/stream' => 'game#stream', as: :game_stream
+  get  'game/:id/stream' => 'game#stream', as: :stream
 
   get  'players' => 'players#index'
   post 'players' => 'players#create'

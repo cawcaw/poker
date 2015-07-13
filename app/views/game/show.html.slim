@@ -10,22 +10,28 @@ br
             img src=image_url("deck/bk.png")
           br
             = hand.player.name
+            |  -&nbsp;
+            = hand.bet
     br
     .table
       - @game.cards_on_table.each do |card|
         img src=image_url("deck/#{card.to_s.rjust(2, "0")}.png")
+      br
+      | current bet:&nbsp;
+      = @game.bet
     .player
       .buttons
         = button_to "bet/call", game_turn_path, turn: "bet",   remote: true, class: 'wood button'
         = button_to "check", game_turn_path,    turn: "check", remote: true, class: 'wood button'
         = button_to "raise", game_turn_path,    turn: "raise", remote: true, class: 'wood button'
       br
+      | (#{@game.hand_of(@player).bet})
       .cards
         - @game.cards_for(@player).each do |card|
           img src=image_url("deck/#{card.to_s.rjust(2, "0")}.png")
   javascript:
     source = new EventSource('/game/#{@game.id}/stream');
-    source.onmessage = function() {
+    source.onmessage = function(event) {
       console.log("server sent page reload");
       Turbolinks.visit(location.toString());
     }
