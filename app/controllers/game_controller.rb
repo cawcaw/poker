@@ -32,7 +32,25 @@ class GameController < ApplicationController
 
   def change
     @game = Game.find(params[:id])
-    case params[:]
+    p params[:turn]
+    case params[:turn]
+    when 'bet'
+      bet_diff = @game.bet - @game.hand_of(@player).bet
+      if bet_diff == 0
+        bet_diff = 20
+        @game.set_bet @game.bet + bet_diff
+      end
+      @game.make_bet(@player, bet_diff)
+      @game.make_check(@player)
+    when 'raise'
+      @game.make_bet(@player, 40)
+      @hame.uncheck_all
+      @game.make_check(@player)
+      @game.set_bet @game.bet + 40
+    when 'check'
+      @game.make_check(@player)
+    end
+    Game.connection.execute "NOTIFY game, 'change'"
     redirect_to :back
   end
 
@@ -45,7 +63,6 @@ class GameController < ApplicationController
         sse.write(data)
       end
     rescue IOError
-    # Client Disconnected
     ensure
       sse.close
     end

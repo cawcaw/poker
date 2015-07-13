@@ -5,10 +5,10 @@ class Game < ActiveRecord::Base
   # STREETS = [ ...
   # this way better then use constant
   def streets
-    [[:preflop, -> { preflop() }],
-     [:flop,    -> { cards_put_on_table(3) }],
-     [:turn,    -> { cards_put_on_table(1) }],
-     [:river,   -> { cards_put_on_table(1) }]]
+    [[:preflop, -> { preflop(); uncheck_all() }],
+     [:flop,    -> { cards_put_on_table(3); uncheck_all() }],
+     [:turn,    -> { cards_put_on_table(1); uncheck_all() }],
+     [:river,   -> { cards_put_on_table(1); uncheck_all() }]]
   end
 
   has_many :hands
@@ -27,6 +27,32 @@ class Game < ActiveRecord::Base
     read_attribute(:button) || 0
   end
   # ////////////////////////////
+
+  def make_bet(player, summ)
+    hand = hand_of(player)
+    transaction do
+      hand.update_attribute :stack, hand.stack - summ
+      hand.update_attribute :bet, hand.bet + summ
+    end
+  end
+
+  def make_check(player)
+    hand_of(player).update_attribute :check, true
+  end
+
+  def check_check(player)
+    hand_of(player).check
+  end
+
+  def uncheck_all
+    hands.each do |hand|
+      hand.update_attribute :check, false
+    end
+  end
+
+  def set_bet(summ)
+    update_attribute :bet, summ
+  end
 
   def button_hand
     hands.where(number: button).first

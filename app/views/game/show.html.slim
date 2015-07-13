@@ -21,8 +21,9 @@ br
       = @game.bet
     .player
       .buttons
-        = button_to "bet/call", game_turn_path, turn: "bet",   remote: true, class: 'wood button'
-        = button_to "check", game_turn_path,    turn: "check", remote: true, class: 'wood button'
+        = button_to "bet/call", { controller: :game, action: :change, turn: "bet" }, method: :post, class: 'wood button'
+        - if @game.check_check(@player)
+          = button_to "check", game_turn_path,    turn: "check", remote: true, class: 'wood button'
         = button_to "raise", game_turn_path,    turn: "raise", remote: true, class: 'wood button'
       br
       | (#{@game.hand_of(@player).bet})
